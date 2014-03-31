@@ -1,6 +1,9 @@
-A simple cliente side application to see the Engineering Canteen Menu at University of Porto
+A simple webpage to see the Engineering Canteen Menu at University of Porto
+
+Always updated!
+
 
 TODO:
   - implement local storage;
   - add more info;
-  - improve the interface; 
+  - improve the interface;
