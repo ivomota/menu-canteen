@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cantina Ementa</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="jquery.xdomainajax.js"></script>
+</head>
+<body>
+<div class="jumbotron">
+	<h1>Ementa Cantina FEUP</h1>
+	<br>
+	<h4 id="horario"></h4>
+</div>
+<div class="container">
+	<div class="dia"></div>
+
+</div>
+
+<div class="result"></div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var url = "http://sigarra.up.pt/feup/pt/mob_eme_geral.cantinas"
+
+		var scores = localStorage['scores'] ? JSON.parse(localStorage['scores']) : [];
+
+		$.ajax({
+		    url: url,
+		    type: 'GET',
+		    cache: true,
+		    success: function(res){
+		    	cantina = $(res.responseText);
+		    	info = $(cantina[5]).text()
+		    	json = $.parseJSON(info)
+					addScore(json);
+		    	$('#horario').append('Horário: ' + json[0].horario);
+		    	i = 0;
+		    	$.each(json[0].ementas, function(index) {
+				  	$('.dia').append('<div class="'+index+'"><h4>' + this.data + ':</h4></div><br>' );
+
+				  	$.each(json[0].ementas[index].pratos, function() {
+						$('.'+i).append('<p>(' + this.tipo_descr + ') ' + this.descricao + '</p>');
+					});
+				  	i++;
+					});
+		    }
+		});
+
+
+		function addScore(newScore) {
+		  scores.push(newScore);
+		  localStorage['scores'] = JSON.stringify(scores);
+		}
+	});
+</script>
+</html>
